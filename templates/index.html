@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ficha de Evolução do Paciente</title>
+    <<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">>
+</head>
+<body>
+    <div class="container">
+        <h1>Ficha de Evolução do Paciente</h1>
+        <form action="/generate_doc" method="post">
+            <div class="section">
+                <h2>Dados do Paciente</h2>
+                <div class="form-group">
+                    <label for="nome">Nome:</label>
+                    <input type="text" id="nome" name="nome" required>
+                </div>
+                <div class="form-group">
+                    <label for="numero">Nº:</label>
+                    <input type="text" id="numero" name="numero">
+                </div>
+                <div class="form-group">
+                    <label for="data_nascimento">Data de Nascimento:</label>
+                    <input type="date" id="data_nascimento" name="data_nascimento">
+                </div>
+                <div class="form-group">
+                    <label for="idade">Idade:</label>
+                    <input type="number" id="idade" name="idade">
+                </div>
+                <div class="form-group">
+                    <label for="sexo">Sexo:</label>
+                    <select id="sexo" name="sexo">
+                        <option value="">Selecione</option>
+                        <option value="Masculino">Masculino</option>
+                        <option value="Feminino">Feminino</option>
+                        <option value="Outro">Outro</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="estado_civil">Est. Civil:</label>
+                    <input type="text" id="estado_civil" name="estado_civil">
+                </div>
+                <div class="form-group">
+                    <label for="ocupacao">Ocupação:</label>
+                    <input type="text" id="ocupacao" name="ocupacao">
+                </div>
+                <div class="form-group">
+                    <label for="nome_pai">Nome do Pai:</label>
+                    <input type="text" id="nome_pai" name="nome_pai">
+                </div>
+                <div class="form-group">
+                    <label for="nome_mae">Mãe:</label>
+                    <input type="text" id="nome_mae" name="nome_mae">
+                </div>
+                <div class="form-group">
+                    <label for="endereco_permanente">Endereço Permanente:</label>
+                    <input type="text" id="endereco_permanente" name="endereco_permanente">
+                </div>
+                <div class="form-group">
+                    <label for="endereco_temporario">Endereço Temporário:</label>
+                    <input type="text" id="endereco_temporario" name="endereco_temporario">
+                </div>
+                <div class="form-group">
+                    <label for="cartao_sus">Cartão SUS:</label>
+                    <input type="text" id="cartao_sus" name="cartao_sus">
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Atendimentos e Evolução</h2>
+                <div class="form-group">
+                    <label for="data_atendimento">Data do Atendimento:</label>
+                    <input type="date" id="data_atendimento" name="data_atendimento" required>
+                </div>
+                <div class="form-group">
+                    <label for="evolucao">Evolução Médica e de Enfermagem:</label>
+                    <textarea id="evolucao" name="evolucao" rows="10" required></textarea>
+                </div>
+            </div>
+
+            <button type="submit">Gerar Ficha</button>
+        </form>
+    </div>
+</body>
+</html>
