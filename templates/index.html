@@ -3,99 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ficha de Evolução do Paciente</title>
+    <title>Ficha Médica</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body>
+
+<body class="app-page">
     <div class="container">
         <div class="top-bar">
             <h1>Ficha de Evolução do Paciente</h1>
             <a href="{{ url_for('logout') }}" class="logout-link">Sair</a>
         </div>
 
-        <form id="ficha-form" action="{{ url_for('generate_doc') }}" method="post">
+        <form id="ficha-form" method="post" action="/generate_doc">
+
             <div class="section">
                 <h2>Dados do Paciente</h2>
+
                 <div class="form-group">
-                    <label for="nome">Nome:</label>
-                    <input type="text" id="nome" name="nome" required>
+                    <label>Nome:</label>
+                    <input type="text" name="nome" required>
                 </div>
+
                 <div class="form-group">
-                    <label for="numero">Nº:</label>
-                    <input type="text" id="numero" name="numero">
+                    <label>Nº:</label>
+                    <input type="text" name="numero">
                 </div>
+
                 <div class="form-group">
-                    <label for="data_nascimento">Data de Nascimento:</label>
-                    <input type="date" id="data_nascimento" name="data_nascimento">
+                    <label>Data Nascimento:</label>
+                    <input type="date" name="data_nascimento">
                 </div>
+
                 <div class="form-group">
-                    <label for="idade">Idade:</label>
-                    <input type="number" id="idade" name="idade">
+                    <label>Idade:</label>
+                    <input type="number" name="idade">
                 </div>
+
                 <div class="form-group">
-                    <label for="sexo">Sexo:</label>
-                    <select id="sexo" name="sexo">
+                    <label>Sexo:</label>
+                    <select name="sexo">
                         <option value="">Selecione</option>
-                        <option value="Masculino">Masculino</option>
-                        <option value="Feminino">Feminino</option>
-                        <option value="Outro">Outro</option>
+                        <option>Masculino</option>
+                        <option>Feminino</option>
+                        <option>Outro</option>
                     </select>
                 </div>
+
                 <div class="form-group">
-                    <label for="estado_civil">Est. Civil:</label>
-                    <input type="text" id="estado_civil" name="estado_civil">
+                    <label>Est. Civil:</label>
+                    <input type="text" name="estado_civil">
                 </div>
+
                 <div class="form-group">
-                    <label for="ocupacao">Ocupação:</label>
-                    <input type="text" id="ocupacao" name="ocupacao">
+                    <label>Ocupação:</label>
+                    <input type="text" name="ocupacao">
                 </div>
+
                 <div class="form-group">
-                    <label for="nome_pai">Nome do Pai:</label>
-                    <input type="text" id="nome_pai" name="nome_pai">
+                    <label>Nome Pai:</label>
+                    <input type="text" name="nome_pai">
                 </div>
+
                 <div class="form-group">
-                    <label for="nome_mae">Mãe:</label>
-                    <input type="text" id="nome_mae" name="nome_mae">
+                    <label>Nome Mãe:</label>
+                    <input type="text" name="nome_mae">
                 </div>
+
                 <div class="form-group">
-                    <label for="endereco_permanente">Endereço Permanente:</label>
-                    <input type="text" id="endereco_permanente" name="endereco_permanente">
+                    <label>Endereço Permanente:</label>
+                    <input type="text" name="endereco_permanente">
                 </div>
+
                 <div class="form-group">
-                    <label for="endereco_temporario">Endereço Temporário:</label>
-                    <input type="text" id="endereco_temporario" name="endereco_temporario">
+                    <label>Endereço Temporário:</label>
+                    <input type="text" name="endereco_temporario">
                 </div>
+
                 <div class="form-group">
-                    <label for="cartao_sus">Cartão SUS:</label>
-                    <input type="text" id="cartao_sus" name="cartao_sus">
+                    <label>Cartão SUS:</label>
+                    <input type="text" name="cartao_sus">
                 </div>
             </div>
 
             <div class="section">
-                <h2>Atendimentos e Evolução</h2>
+                <h2>Evolução</h2>
+
                 <div class="form-group">
-                    <label for="data_atendimento">Data do Atendimento:</label>
-                    <input type="date" id="data_atendimento" name="data_atendimento" required>
+                    <label>Data do Atendimento:</label>
+                    <input type="date" name="data_atendimento" required>
                 </div>
 
-                <!-- Campo para digitar nova evolução -->
                 <div class="form-group">
-                    <label for="nova_evolucao">Nova Evolução Médica e de Enfermagem:</label>
-                    <textarea id="nova_evolucao" rows="4"></textarea>
-                    <button type="button" id="add_evolucao_btn" class="secondary-btn">
-                        Adicionar evolução
-                    </button>
-                    <p class="small-text">
-                        Você pode adicionar várias evoluções. Cada evolução adicionada
-                        aparece abaixo e pode ser <strong>editada</strong> ou
-                        <strong>removida</strong> antes de gerar a ficha.
-                    </p>
+                    <label>Nova Evolução:</label>
+                    <textarea id="nova_evolucao" rows="4" placeholder="Digite a evolução médica e de enfermagem"></textarea>
+                    <button type="button" id="add_evolucao_btn" class="secondary-btn">Adicionar evolução</button>
                 </div>
 
-                <!-- Lista das evoluções adicionadas -->
                 <div id="lista_evolucoes"></div>
 
-                <!-- Campo hidden que irá para o back-end com TODAS as evoluções -->
+                <!-- campo oculto com todas as evoluções concatenadas -->
                 <textarea id="evolucao" name="evolucao" hidden></textarea>
             </div>
 
@@ -104,48 +110,60 @@
     </div>
 
     <script>
-        const novaEvolucaoInput = document.getElementById('nova_evolucao');
-        const addEvolucaoBtn = document.getElementById('add_evolucao_btn');
-        const listaEvolucoes = document.getElementById('lista_evolucoes');
-        const evolucaoHidden = document.getElementById('evolucao');
-        const fichaForm = document.getElementById('ficha-form');
+        const novaEvolucaoInput = document.getElementById("nova_evolucao");
+        const addEvolucaoBtn = document.getElementById("add_evolucao_btn");
+        const listaEvolucoes = document.getElementById("lista_evolucoes");
+        const evolucaoHidden = document.getElementById("evolucao");
 
         function atualizarCampoHidden() {
-            const textos = Array.from(
-                document.querySelectorAll('.evolucao-text')
-            ).map(t => t.value.trim()).filter(t => t.length > 0);
+            const textos = [...document.querySelectorAll(".evolucao-text")]
+                .map(t => t.value.trim())
+                .filter(t => t.length > 0);
 
-            // junta tudo com duas quebras de linha entre cada evolução
-            evolucaoHidden.value = textos.join('\\n\\n');
+            evolucaoHidden.value = textos.join("\\n\\n");
         }
 
         function criarItemEvolucao(texto) {
-            const item = document.createElement('div');
-            item.className = 'evolucao-item';
+            const item = document.createElement("div");
+            item.className = "evolucao-item";
 
-            const label = document.createElement('span');
-            label.className = 'evolucao-label';
-            label.textContent = 'Evolução:';
+            const label = document.createElement("span");
+            label.className = "evolucao-label";
+            label.textContent = "Evolução:";
 
-            const textarea = document.createElement('textarea');
-            textarea.className = 'evolucao-text';
+            const textarea = document.createElement("textarea");
+            textarea.className = "evolucao-text";
             textarea.rows = 4;
             textarea.value = texto;
+            textarea.disabled = true; // só edita depois de clicar em Editar
 
-            textarea.addEventListener('input', atualizarCampoHidden);
+            const btnEditar = document.createElement("button");
+            btnEditar.type = "button";
+            btnEditar.textContent = "Editar";
+            btnEditar.className = "edit-btn";
 
-            const btnRemover = document.createElement('button');
-            btnRemover.type = 'button';
-            btnRemover.textContent = 'Remover';
-            btnRemover.className = 'danger-btn';
+            btnEditar.addEventListener("click", () => {
+                textarea.disabled = !textarea.disabled;
+                btnEditar.textContent = textarea.disabled ? "Editar" : "Salvar";
 
-            btnRemover.addEventListener('click', () => {
+                if (textarea.disabled) {
+                    atualizarCampoHidden();
+                }
+            });
+
+            const btnRemover = document.createElement("button");
+            btnRemover.type = "button";
+            btnRemover.textContent = "Remover";
+            btnRemover.className = "danger-btn";
+
+            btnRemover.addEventListener("click", () => {
                 item.remove();
                 atualizarCampoHidden();
             });
 
-            const actions = document.createElement('div');
-            actions.className = 'evolucao-actions';
+            const actions = document.createElement("div");
+            actions.className = "evolucao-actions";
+            actions.appendChild(btnEditar);
             actions.appendChild(btnRemover);
 
             item.appendChild(label);
@@ -155,32 +173,28 @@
             return item;
         }
 
-        addEvolucaoBtn.addEventListener('click', () => {
+        addEvolucaoBtn.addEventListener("click", () => {
             const texto = novaEvolucaoInput.value.trim();
             if (!texto) return;
 
-            const item = criarItemEvolucao(texto);
-            listaEvolucoes.appendChild(item);
-            novaEvolucaoInput.value = '';
+            listaEvolucoes.appendChild(criarItemEvolucao(texto));
+            novaEvolucaoInput.value = "";
             atualizarCampoHidden();
         });
 
-        fichaForm.addEventListener('submit', (event) => {
-            // se o usuário não clicou em "Adicionar evolução",
-            // mas escreveu algo em nova_evolucao, aproveita esse texto
-            if (
-                document.querySelectorAll('.evolucao-text').length === 0 &&
-                novaEvolucaoInput.value.trim().length > 0
-            ) {
+        const fichaForm = document.getElementById("ficha-form");
+        fichaForm.addEventListener("submit", (event) => {
+            if (document.querySelectorAll(".evolucao-text").length === 0 &&
+                novaEvolucaoInput.value.trim().length > 0) {
                 const item = criarItemEvolucao(novaEvolucaoInput.value.trim());
                 listaEvolucoes.appendChild(item);
-                novaEvolucaoInput.value = '';
+                novaEvolucaoInput.value = "";
             }
 
             atualizarCampoHidden();
 
             if (!evolucaoHidden.value.trim()) {
-                alert('Adicione pelo menos uma evolução antes de gerar a ficha.');
+                alert("Adicione pelo menos uma evolução antes de gerar a ficha.");
                 event.preventDefault();
             }
         });
