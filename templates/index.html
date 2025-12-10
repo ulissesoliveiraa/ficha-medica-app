@@ -4,12 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ficha de Evolução do Paciente</title>
-    <<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div class="container">
-        <h1>Ficha de Evolução do Paciente</h1>
-        <form action="/generate_doc" method="post">
+        <div class="top-bar">
+            <h1>Ficha de Evolução do Paciente</h1>
+            <a href="{{ url_for('logout') }}" class="logout-link">Sair</a>
+        </div>
+
+        <form id="ficha-form" action="{{ url_for('generate_doc') }}" method="post">
             <div class="section">
                 <h2>Dados do Paciente</h2>
                 <div class="form-group">
@@ -73,14 +77,113 @@
                     <label for="data_atendimento">Data do Atendimento:</label>
                     <input type="date" id="data_atendimento" name="data_atendimento" required>
                 </div>
+
+                <!-- Campo para digitar nova evolução -->
                 <div class="form-group">
-                    <label for="evolucao">Evolução Médica e de Enfermagem:</label>
-                    <textarea id="evolucao" name="evolucao" rows="10" required></textarea>
+                    <label for="nova_evolucao">Nova Evolução Médica e de Enfermagem:</label>
+                    <textarea id="nova_evolucao" rows="4"></textarea>
+                    <button type="button" id="add_evolucao_btn" class="secondary-btn">
+                        Adicionar evolução
+                    </button>
+                    <p class="small-text">
+                        Você pode adicionar várias evoluções. Cada evolução adicionada
+                        aparece abaixo e pode ser <strong>editada</strong> ou
+                        <strong>removida</strong> antes de gerar a ficha.
+                    </p>
                 </div>
+
+                <!-- Lista das evoluções adicionadas -->
+                <div id="lista_evolucoes"></div>
+
+                <!-- Campo hidden que irá para o back-end com TODAS as evoluções -->
+                <textarea id="evolucao" name="evolucao" hidden></textarea>
             </div>
 
             <button type="submit">Gerar Ficha</button>
         </form>
     </div>
+
+    <script>
+        const novaEvolucaoInput = document.getElementById('nova_evolucao');
+        const addEvolucaoBtn = document.getElementById('add_evolucao_btn');
+        const listaEvolucoes = document.getElementById('lista_evolucoes');
+        const evolucaoHidden = document.getElementById('evolucao');
+        const fichaForm = document.getElementById('ficha-form');
+
+        function atualizarCampoHidden() {
+            const textos = Array.from(
+                document.querySelectorAll('.evolucao-text')
+            ).map(t => t.value.trim()).filter(t => t.length > 0);
+
+            // junta tudo com duas quebras de linha entre cada evolução
+            evolucaoHidden.value = textos.join('\\n\\n');
+        }
+
+        function criarItemEvolucao(texto) {
+            const item = document.createElement('div');
+            item.className = 'evolucao-item';
+
+            const label = document.createElement('span');
+            label.className = 'evolucao-label';
+            label.textContent = 'Evolução:';
+
+            const textarea = document.createElement('textarea');
+            textarea.className = 'evolucao-text';
+            textarea.rows = 4;
+            textarea.value = texto;
+
+            textarea.addEventListener('input', atualizarCampoHidden);
+
+            const btnRemover = document.createElement('button');
+            btnRemover.type = 'button';
+            btnRemover.textContent = 'Remover';
+            btnRemover.className = 'danger-btn';
+
+            btnRemover.addEventListener('click', () => {
+                item.remove();
+                atualizarCampoHidden();
+            });
+
+            const actions = document.createElement('div');
+            actions.className = 'evolucao-actions';
+            actions.appendChild(btnRemover);
+
+            item.appendChild(label);
+            item.appendChild(textarea);
+            item.appendChild(actions);
+
+            return item;
+        }
+
+        addEvolucaoBtn.addEventListener('click', () => {
+            const texto = novaEvolucaoInput.value.trim();
+            if (!texto) return;
+
+            const item = criarItemEvolucao(texto);
+            listaEvolucoes.appendChild(item);
+            novaEvolucaoInput.value = '';
+            atualizarCampoHidden();
+        });
+
+        fichaForm.addEventListener('submit', (event) => {
+            // se o usuário não clicou em "Adicionar evolução",
+            // mas escreveu algo em nova_evolucao, aproveita esse texto
+            if (
+                document.querySelectorAll('.evolucao-text').length === 0 &&
+                novaEvolucaoInput.value.trim().length > 0
+            ) {
+                const item = criarItemEvolucao(novaEvolucaoInput.value.trim());
+                listaEvolucoes.appendChild(item);
+                novaEvolucaoInput.value = '';
+            }
+
+            atualizarCampoHidden();
+
+            if (!evolucaoHidden.value.trim()) {
+                alert('Adicione pelo menos uma evolução antes de gerar a ficha.');
+                event.preventDefault();
+            }
+        });
+    </script>
 </body>
 </html>

@@ -1,39 +1,47 @@
+/* ------------------ BODY / BACKGROUND ------------------ */
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #f4f4f4;
-    color: #333;
-    line-height: 1.6;
     margin: 0;
-    padding: 20px;
+    padding: 40px 20px;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
-    align-items: flex-start; /* Ajustado para flex-start para manter o conteúdo no topo */
-    min-height: 100vh;
+    align-items: flex-start;
+
+    /* fundo azul com imagem (coloque bg_ficha_medica.jpg em /static) */
+    background:
+        linear-gradient(rgba(0, 86, 179, 0.7), rgba(0, 123, 255, 0.7)),
+        url('bg_ficha_medica.jpg') no-repeat center center fixed;
+    background-size: cover;
 }
 
+/* ------------------ CONTAINER GERAL ------------------ */
 .container {
-    background: #fff;
+    background: #ffffff;
     padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
     width: 100%;
-    max-width: 800px;
+    max-width: 900px;
 }
 
+/* ------------------ TITULOS ------------------ */
 h1, h2 {
     color: #0056b3;
     text-align: center;
     margin-bottom: 20px;
 }
 
+/* ------------------ SECTIONS ------------------ */
 .section {
     border: 1px solid #ddd;
-    border-radius: 5px;
+    border-radius: 8px;
     padding: 20px;
     margin-bottom: 30px;
     background-color: #f9f9f9;
 }
 
+/* ------------------ FORM ------------------ */
 .form-group {
     margin-bottom: 15px;
 }
@@ -42,6 +50,7 @@ h1, h2 {
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
+    color: #003366;
 }
 
 .form-group input[type="text"],
@@ -49,18 +58,20 @@ h1, h2 {
 .form-group input[type="date"],
 .form-group select,
 .form-group textarea {
-    width: calc(100% - 22px); /* Considera padding e borda */
+    width: calc(100% - 22px);
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 16px;
+    box-sizing: border-box;
 }
 
 .form-group textarea {
     resize: vertical;
-    min-height: 100px;
+    min-height: 80px;
 }
 
+/* ------------------ BOTÕES ------------------ */
 button {
     display: block;
     width: 100%;
@@ -68,12 +79,131 @@ button {
     background-color: #007bff;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 6px;
     font-size: 18px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.1s ease;
 }
 
 button:hover {
     background-color: #0056b3;
+    transform: translateY(-1px);
+}
+
+/* Botões menores (secundários) */
+.secondary-btn {
+    margin-top: 10px;
+    width: auto;
+    padding: 8px 16px;
+    font-size: 14px;
+}
+
+/* Botão "Perigo" (remover) */
+.danger-btn {
+    background-color: #dc3545;
+    width: auto;
+    padding: 6px 14px;
+    font-size: 14px;
+}
+
+.danger-btn:hover {
+    background-color: #b52a36;
+}
+
+/* Texto pequeno de ajuda */
+.small-text {
+    font-size: 13px;
+    color: #555;
+}
+
+/* ------------------ LISTA DE EVOLUÇÕES ------------------ */
+#lista_evolucoes {
+    margin-top: 15px;
+}
+
+.evolucao-item {
+    border: 1px solid #cce0ff;
+    border-radius: 6px;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #eef4ff;
+}
+
+.evolucao-label {
+    display: block;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #004080;
+}
+
+.evolucao-item textarea {
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 8px;
+}
+
+.evolucao-actions {
+    text-align: right;
+}
+
+/* ------------------ TOPO / LOGOUT ------------------ */
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.top-bar h1 {
+    text-align: left;
+    margin-bottom: 0;
+}
+
+.logout-link {
+    font-size: 14px;
+    color: #0056b3;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.logout-link:hover {
+    text-decoration: underline;
+}
+
+/* ------------------ LOGIN ------------------ */
+.login-container {
+    max-width: 450px;
+}
+
+.login-form button {
+    margin-top: 10px;
+}
+
+.alert {
+    background-color: #ffdddd;
+    border: 1px solid #ffaaaa;
+    border-radius: 6px;
+    padding: 10px;
+    margin-bottom: 15px;
+    color: #a00000;
+}
+
+.login-hint {
+    font-size: 13px;
+    text-align: center;
+    margin-top: 10px;
+}
+
+/* Responsivo */
+@media (max-width: 600px) {
+    .top-bar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .logout-link {
+        align-self: flex-end;
+    }
 }
